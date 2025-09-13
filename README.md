@@ -1,1 +1,1 @@
-# micronew
+# tecmicro
