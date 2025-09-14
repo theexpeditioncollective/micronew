@@ -431,30 +431,69 @@
       transform: translateY(-4px);
       box-shadow: var(--card-shadow-hover);
     }
+
+    /* CSS Loader (new) */
+    #css-loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #181824;
+      z-index: 9999;
+      opacity: 0;
+      animation: loaderFadeIn 0.7s cubic-bezier(.77,0,.18,1) forwards;
+      transition: opacity 0.5s cubic-bezier(.77,0,.18,1);
+    }
+
+    #css-loader .loader-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 16px;
+      padding: 32px 36px;
+      background: rgba(24,24,36,0.98);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    }
+
+    #css-loader .loader-spinner {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 5px solid #23243a;
+      border-top: 5px solid #a3e635;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    #css-loader .loader-text {
+      margin-top: 8px;
+      font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+      color: #e0e0e0;
+      font-size: 1.08rem;
+      letter-spacing: 0.04em;
+      font-weight: 400;
+      opacity: 0.85;
+    }
+
+    @keyframes loaderFadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes loaderFadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
   </style>
 </head>
 
 <body class="relative">
-  <div id="pageLoader" class="loader-overlay">
-    <div class="loader">
-      <div class="loading-text">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
-      </div>
-      <div class="loading-bar-background">
-        <div class="loading-bar">
-          <div class="white-bars-container">
-            <div class="white-bar"></div>
-            <div class="white-bar"></div>
-            <div class="white-bar"></div>
-            <div class="white-bar"></div>
-            <div class="white-bar"></div>
-            <div class="white-bar"></div>
-            <div class="white-bar"></div>
-            <div class="white-bar"></div>
-            <div class="white-bar"></div>
-            <div class="white-bar"></div>
-          </div>
-        </div>
-      </div>
+  <!-- CSS Loader -->
+  <div id="css-loader" role="status" aria-live="polite" aria-label="Page loading">
+    <div class="loader-inner">
+      <div class="loader-spinner"></div>
+      <span class="loader-text">Loading...</span>
     </div>
   </div>
   <!-- Dim overlay for all except hero section -->
@@ -538,7 +577,7 @@
     <div class="max-w-7xl mx-auto px-6 pt-8 pb-12 md:pt-14 md:pb-24 relative z-10">
       <div class="max-w-7xl mx-auto px-6 pt-8 pb-12 md:pt-14 md:pb-24 relative z-10">
         <div class="mb-12 text-center">
-          <h1 id="heroHeadline" class="ghost-seq text-3xl md:text-5xl font-extrabold hero-text-shadow"
+          <h1 id="heroHeadline" class="ghost-seq text-3xl md:text-5xl font-extrabold"
             aria-label="Beyond itineraries. Beyond checklists.">
             <span class="block whitespace-normal md:whitespace-nowrap line" aria-hidden="true">
               <span class="ghost-word">Beyond</span> <span class="ghost-word">itineraries.</span> <span
@@ -551,16 +590,16 @@
           <div class="lg:col-span-7 space-y-7 pl-4 sm:pl-6 lg:pl-10 xl:pl-14">
             <!-- <p class="uppercase tracking-[0.25em] text-xs text-slate-400">Invitation Only</p> -->
             <div class="space-y-2 md:space-y-3">
-              <p class="text-3xl md:text-5xl font-extrabold leading-snug hero-text-shadow" style="color: var(--ink)">
+              <p class="text-3xl md:text-5xl font-extrabold leading-snug mb-6 md:mb-8" style="color: var(--ink)">
                 #Beyondatrip</p>
-              <p class="text-white text-lg md:text-2xl leading-snug max-w-2xl font-medium hero-text-shadow">Step into
+              <p class="text-white text-lg md:text-2xl leading-tight max-w-2xl font-medium">Step into
                 rivers that remember, <br> Mountains that breathe,<br> and villages where time lingers.</p>
-              <p class="text-white text-lg md:text-2xl leading-snug max-w-2xl font-medium hero-text-shadow">Capture
+              <p class="text-white text-lg md:text-2xl leading-tight max-w-2xl font-medium">Capture
                 fleeting truths through your lens,<br> lose yourself in sacred cities, <br> and find rhythm in artisans'
                 hands.</p>
-              <p class="text-white text-lg md:text-2xl leading-snug max-w-2xl font-medium hero-text-shadow">Let
+              <p class="text-white text-lg md:text-2xl leading-tight max-w-2xl font-medium">Let
                 creativity heal where words cannot,<br> and draw strength from coasts and forests</p>
-              <p class="text-white text-lg md:text-2xl leading-snug max-w-2xl font-medium hero-text-shadow">This is not
+              <p class="text-white text-lg md:text-2xl leading-tight max-w-2xl font-medium">This is not
                 escape, but return <br> - to community, <strong>to yourself.</strong></p>
             </div>
 
@@ -572,12 +611,12 @@
             <div class="glass rounded-3xl p-8 lg:p-10 relative overflow-hidden" style="z-index:1;">
               <div class="ring rounded-3xl" aria-hidden="true"></div>
               <div class="flex items-baseline gap-1">
-                <h3 class="text-2xl md:text-3xl font-extrabold">Be part of the <br> TEC <span
-                    class="inline-flex items-baseline gap-1">Tribe!<span class="seats-note">only <strong>100
-                        seats</strong><br>available</span></span></h3>
+                <h3 class="text-2xl md:text-3xl font-extrabold leading-tight mb-1 md:mb-2">Be part of the <br> TEC <span
+                    class="inline-flex items-baseline gap-1 leading-none">Tribe!<span class="seats-note">only  100
+                        seats <br>available</span></span></h3>
               </div>
               <form id="waitlistHero" action="https://formsubmit.co/theexpeditioncollectiveweb@gmail.com" method="POST"
-                class="mt-8 space-y-4 pointer-events-auto" novalidate>
+                class="mt-2 md:mt-3 space-y-4 md:space-y-5 pointer-events-auto" novalidate>
                 <div class="grid md:grid-cols-2 gap-4">
                   <label class="block">
                     <span class="text-xs text-slate-400">Name</span>
@@ -589,7 +628,7 @@
                     <span class="text-xs text-slate-400">Email</span>
                     <input required id="emailHero" name="email" type="email"
                       class="mt-1 w-full rounded-xl bg-white/20 border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-[#96BC21] pointer-events-auto"
-                      placeholder="you@domain.com" />
+                      placeholder="Your Email" />
                   </label>
                 </div>
                 <div class="grid md:grid-cols-2 gap-4">
@@ -597,7 +636,7 @@
                     <span class="text-xs text-slate-400">IG Handle (optional)</span>
                     <input id="handleHero" name="handle" type="text"
                       class="mt-1 w-full rounded-xl bg-white/20 border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-[#96BC21] pointer-events-auto"
-                      placeholder="@expedition.alpha" />
+                      placeholder="@expedition" />
                   </label>
                   <label class="block">
                     <span class="text-xs text-slate-400">Phone Number (optional)</span>
@@ -615,13 +654,13 @@
                 <!-- Honeypot field for bots -->
                 <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
                 <div class="relative">
-                  <span class="voucher-badge">1000 INR voucher included</span>
+                  <span class="voucher-badge">₹ 1000 voucher included</span>
                   <button
                     class="btn w-full rounded-2xl px-6 py-3 border-2 border-[#96BC21] text-white font-semibold shadow-xl bg-transparent"
                     type="submit">Claim Your Spot</button>
                 </div>
                 <p id="formStatusHero" class="text-xs text-slate-400" role="status" aria-live="polite"></p>
-                <p class="text-xs text-slate-500">By joining, you agree to receive occasional insider updates.No Spams.
+                <p class="text-xs text-slate-500">By joining, you agree to receive occasional insider updates. No Spams.
                   Unsubscribe anytime.</p>
               </form>
             </div>
@@ -653,7 +692,7 @@
           <div class="enhanced-benefit-card" data-aos="fade-up" data-aos-delay="100">
             <div class="benefit-icon-wrapper">
               <div class="icon-bg-glow"></div>
-              <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-md mb-4 overflow-hidden text-black">
+              <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-md overflow-hidden text-black">
                 <img src="icons/perks.png" alt="Perks icon" class="w-10 h-10 object-contain" loading="lazy" />
               </div>
             </div>
@@ -671,7 +710,7 @@
           <div class="enhanced-benefit-card" data-aos="fade-up" data-aos-delay="200">
             <div class="benefit-icon-wrapper">
               <div class="icon-bg-glow"></div>
-              <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-md mb-4 overflow-hidden text-black">
+              <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-md overflow-hidden text-black">
                 <img src="icons/early access.png" alt="Early access icon" class="w-10 h-10 object-contain" loading="lazy" />
               </div>
             </div>
@@ -687,7 +726,7 @@
           <div class="enhanced-benefit-card md:col-span-2 lg:col-span-1 md:mx-auto lg:mx-0" data-aos="fade-up" data-aos-delay="300">
             <div class="benefit-icon-wrapper">
               <div class="icon-bg-glow"></div>
-              <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-md mb-4 overflow-hidden text-black">
+              <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-md overflow-hidden text-black">
                 <img src="icons/behind the scenes.png" alt="Behind the scenes icon" class="w-10 h-10 object-contain" loading="lazy" />
               </div>
             </div>
@@ -757,7 +796,7 @@
             <h4 class="font-semibold text-lg">Instagram</h4>
             <p class="text-slate-400 text-sm">Follow updates & behind‑the‑scenes.</p>
             <span
-              class="mt-2 inline-flex items-center gap-1 text-white text-xs font-medium group-hover:translate-x-1 transition-transform">@yourhandle
+              class="mt-2 inline-flex items-center gap-1 text-white text-xs font-medium group-hover:translate-x-1 transition-transform">@OurInstaHandle
               <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
               </svg></span>
@@ -1116,12 +1155,14 @@
     document.querySelectorAll('#perks .glass, #faq details').forEach(el => observer.observe(el));
 
     // (Theme toggle removed to match standard header across site)
-    // Loader dismissal
-    window.addEventListener('load', () => {
-      const loader = document.getElementById('pageLoader');
+    // Loader dismissal (CSS loader)
+    window.addEventListener('load', function () {
+      var loader = document.getElementById('css-loader');
       if (loader) {
-        loader.style.opacity = '0';
-        setTimeout(() => loader.remove(), 450);
+        loader.style.animation = 'loaderFadeOut 0.6s cubic-bezier(.77,0,.18,1) forwards';
+        setTimeout(function () {
+          if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 650);
       }
     });
   </script>

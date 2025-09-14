@@ -1187,6 +1187,21 @@ body {
   transform: translateY(0);
 }
 
+/* Center and darken contact cards */
+#contact .glass {
+  background: #000 !important; /* force black background only in contact section */
+}
+
+#contact .glass.flex {
+  align-items: center; /* center icon + text horizontally */
+  text-align: center;  /* center text lines */
+}
+
+/* Make FAQ accordions black */
+#faq .glass {
+  background: #000 !important;
+}
+
 .contact-form {
   background: #f8f8f8;
   padding: 25px 35px;
@@ -1362,8 +1377,8 @@ body {
   position: absolute;
   top: -8px;
   right: -8px;
-  background: transparent; /* removed orange gradient */
-  color: #e2e8f0; /* slate-300 */
+  background: #000; /* solid black background */
+  color: #ffffff; /* higher contrast on black */
   font-size: 0.65rem;
   font-weight: 600;
   padding: 4px 8px;
@@ -1372,7 +1387,7 @@ body {
   white-space: nowrap;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: none; /* remove glow */
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15) inset; /* subtle inner border for definition */
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
@@ -1389,7 +1404,7 @@ body {
 /* Inline two-line seats note aligned with heading */
 .seats-note {
   display: inline-block;
-  font-size: 0.75rem; /* ~12px */
+  font-size: 0.7rem; /* slightly smaller */
   line-height: 1.05;  /* tight like reference */
   color: rgba(226, 232, 240, 0.9); /* slate-300/90 */
   position: relative;
@@ -1401,7 +1416,7 @@ body {
   white-space: pre-line; /* preserve line breaks but allow text alignment */
 }
 .seats-note strong {
-  font-weight: 700; /* slightly bolder for the number */
+  font-weight: 500; /* reduce boldness */
   color: #fff;
 }
 
@@ -3015,7 +3030,7 @@ body {
 .benefit-icon-wrapper {
   position: relative;
   display: inline-block;
-  margin-bottom: 19.3px; /* Increased by 10% from 17.5px */
+  margin-bottom: 12px; /* tighten gap below icon */
 }
 
 .icon-bg-glow {
@@ -3150,7 +3165,7 @@ body {
 .benefit-title {
   font-size: clamp(12.3px, 1.73vw, 16.2px); /* Increased by 10% from 11.2px, 1.575vw, 14.7px */
   font-weight: 700;
-  margin-bottom: 13.9px; /* Increased by 10% from 12.6px */
+  margin: 12px 0; /* even gap above and below title */
   color: #ffffff;
   position: relative;
   transition: color 0.3s ease;
@@ -3160,8 +3175,8 @@ body {
 /* Title hover color change removed */
 
 .benefit-description {
-  font-size: clamp(9.9px, 1.43vw, 13.2px); /* Increased by 10% from 9px, 1.3vw, 12px */
-  line-height: 1.7;
+  font-size: clamp(9px, 1.3vw, 12px); /* slightly smaller to balance spacing */
+  line-height: 1.6; /* tighten line-height for compact block */
   color: rgba(255, 255, 255, 0.75);
   margin: 0;
   transition: color 0.3s ease;
@@ -3226,7 +3241,8 @@ body {
   }
   
   .benefit-description {
-    font-size: clamp(9.9px, 2.75vw, 12.1px); /* Increased by 10% from 9px, 2.5vw, 11px */
+    font-size: clamp(9px, 2.5vw, 11.5px);
+    line-height: 1.55;
   }
 }
 
@@ -5141,7 +5157,6 @@ Modern Reset Button
 
 .connect-page .header .logo-wrapper .monogram {
   transition: none !important;
-}
 }
 
 /* Safari-specific fixes for header visibility issues */
