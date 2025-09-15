@@ -697,7 +697,7 @@
               </div>
             </div>
             <h3 class="benefit-title">Unlock Perks</h3>
-            <p class="benefit-description">Get 21000 off instantly just for
+            <p class="benefit-description">Get 1000 off instantly just for
               signing up on any upcoming
               expeditions! Plus, enjoy ongoing perks
               like exclusive discounts, free
@@ -755,7 +755,7 @@
       <div class="space-y-4">
         <details class="glass rounded-xl p-5">
           <summary class="cursor-pointer font-semibold">What happens after I join?</summary>
-          <p class="text-slate-300 mt-2 text-sm">Instantly, you receive a <strong>welcome kit, insider updates</strong> on expeditions we are building, <strong>priority access</strong> to bookings and a voucher for <strong>₹ 1000</strong>. Moreover, you are a permanent member of the <strong>TEC Tribe</strong> who can avail regular benefits and exclusive access to <strong>The Collective of artists, creatives, explorers, and travellers.</strong></p>
+          <p class="text-slate-300 mt-2 text-sm">Instantly, you receive a <strong>welcome kit, insider updates</strong> on expeditions we are building, <strong>priority access</strong> to bookings and a voucher for <strong>₹1000</strong>. Moreover, you are a permanent member of the <strong>TEC Tribe</strong> who can avail regular benefits and exclusive access to <strong>The Collective of artists, creatives, explorers, and travellers.</strong></p>
         </details>
         <details class="glass rounded-xl p-5">
           <summary class="cursor-pointer font-semibold">What is an Expedition like at TEC?</summary>
@@ -806,6 +806,7 @@
             <h4 class="font-semibold text-lg">Phone</h4>
             <p class="text-slate-400 text-sm">Mon–Fri 9am–6pm IST</p>
             <p class="mt-2 text-sm text-slate-200 select-all">+91 6901 253 427</p>
+            <p class="mt-1 text-sm text-slate-200 select-all">+91 6003591019</p>
           </div>
         </div>
         <!-- Email -->
@@ -861,14 +862,15 @@
   <!-- MODAL -->
   <div id="modal" class="fixed inset-0 hidden flex items-center justify-center bg-black/70 z-50">
     <div class="glass rounded-3xl p-8 w-[92vw] max-w-md text-center relative">
-      <button id="closeModal" class="absolute right-4 top-4 text-slate-400 hover:text-white">✕</button>
-      <h4 class="text-2xl font-extrabold">Welcome, Explorer!</h4>
+      <button id="closeModal" class="absolute right-4 top-4 text-slate-400 hover:text-white z-20">✕</button>
+      <h4 class="text-3xl font-extrabold text-center">🎉 Welcome, Explorer! 🎉</h4>
       <p class="text-slate-300 mt-2">Welcome Explorer! You’re officially inside <span class="font-semibold">&ldquo;The
           Inner Circle&rdquo;</span>.</p>
-      <canvas id="confetti" class="mt-6 w-full h-24 rounded-xl bg-white/5"></canvas>
+      <!-- <p class="text-slate-300 mt-2 text-center">Your adventure begins now. Get ready for an extraordinary journey!</p> -->
       <a href="#" id="dismiss"
-        class="mt-6 inline-flex justify-center rounded-xl px-5 py-3 border-2 border-[#96BC21] text-white font-semibold bg-transparent">Close</a>
+        class="mt-8 mx-auto block w-fit px-8 py-3 rounded-xl border-2 border-[#96BC21] text-white font-semibold bg-transparent hover:bg-[#96BC21] transition-colors duration-300">Continue Journey</a>
     </div>
+    <canvas id="confetti" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
   </div>
 
   <!-- BACK TO TOP BUTTON (Expedition style) -->
@@ -1021,10 +1023,10 @@
           // Also mirror update to the other meter if exists
           if (scope.mirrorScope) { decrementMeter(scope.mirrorScope); }
 
-          modal.classList.remove('hidden');
+          // Show full-screen confetti celebration without modal
           runConfetti();
           if (statusEl) {
-            statusEl.textContent = 'Success! You are in.';
+            statusEl.textContent = '🎉 Success! Welcome to The Inner Circle, Explorer!';
             statusEl.classList.remove('text-rose-400');
             statusEl.style.color = '#96BC21';
           }
@@ -1099,32 +1101,79 @@
       setTimeout(() => toTopBtn.classList.remove('animate-pulse'), 700);
     });
 
-    // Tiny canvas confetti
+    // Full-screen confetti celebration
     function runConfetti() {
-      const c = document.getElementById('confetti');
-      if (!c) return; const ctx = c.getContext('2d');
-      const W = c.width = c.clientWidth * 2; // hi‑dpi
-      const H = c.height = c.clientHeight * 2;
-      const N = 90;
+      // Create full-screen canvas dynamically
+      let c = document.getElementById('confetti-celebration');
+      if (!c) {
+        c = document.createElement('canvas');
+        c.id = 'confetti-celebration';
+        c.style.position = 'fixed';
+        c.style.top = '0';
+        c.style.left = '0';
+        c.style.width = '100vw';
+        c.style.height = '100vh';
+        c.style.pointerEvents = 'none';
+        c.style.zIndex = '9999';
+        document.body.appendChild(c);
+      }
+      
+      const ctx = c.getContext('2d');
+      const W = c.width = window.innerWidth * 2; // hi‑dpi
+      const H = c.height = window.innerHeight * 2;
+      const N = 200; // More particles for full screen
+      const colors = ['#96BC21', '#22d3ee', '#7cf3c9', '#5a7bff', '#ff6b6b', '#ffd93d'];
+      
       const parts = Array.from({ length: N }, (_, i) => ({
         x: Math.random() * W,
-        y: -Math.random() * H,
-        r: 2 + Math.random() * 6,
-        vx: -1 + Math.random() * 2,
-        vy: 2 + Math.random() * 3,
-        a: Math.random() * Math.PI * 2
+        y: -Math.random() * H * 0.3, // Start from top
+        r: 3 + Math.random() * 8,
+        vx: -3 + Math.random() * 6,
+        vy: 4 + Math.random() * 6,
+        a: Math.random() * Math.PI * 2,
+        va: 0.05 + Math.random() * 0.1,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        gravity: 0.3 + Math.random() * 0.2
       }));
-      let t = 0; const maxT = 1200; // ~2s
+      
+      let t = 0; 
+      const maxT = 4000; // 4 seconds
+      
       function tick() {
-        t += 16; ctx.clearRect(0, 0, W, H);
+        t += 16; 
+        ctx.clearRect(0, 0, W, H);
+        
         parts.forEach(p => {
-          p.x += p.vx; p.y += p.vy; p.a += 0.1;
-          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a);
-          ctx.fillStyle = ['#5a7bff', '#22d3ee', '#7cf3c9', '#ffffffaa'][p.r | 0 % 4];
+          p.x += p.vx; 
+          p.y += p.vy; 
+          p.a += p.va;
+          p.vy += p.gravity; // Add gravity effect
+          
+          // Reset particles that fall off screen
+          if (p.y > H + 50) {
+            p.y = -50;
+            p.x = Math.random() * W;
+            p.vy = 4 + Math.random() * 6;
+          }
+          
+          ctx.save(); 
+          ctx.translate(p.x, p.y); 
+          ctx.rotate(p.a);
+          ctx.fillStyle = p.color;
           ctx.fillRect(-p.r, -p.r, p.r * 2, p.r * 2);
           ctx.restore();
         });
-        if (t < maxT) requestAnimationFrame(tick);
+        
+        if (t < maxT) {
+          requestAnimationFrame(tick);
+        } else {
+          // Clean up - remove canvas after animation
+          setTimeout(() => {
+            if (c && c.parentNode) {
+              c.parentNode.removeChild(c);
+            }
+          }, 500);
+        }
       }
       tick();
     }
