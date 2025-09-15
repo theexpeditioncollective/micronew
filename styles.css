@@ -1414,6 +1414,7 @@ body {
   vertical-align: baseline; /* ensure baseline alignment */
   text-align: left; /* ensure left alignment for both lines */
   white-space: pre-line; /* preserve line breaks but allow text alignment */
+  font-weight: 100; /* very thin font weight */
 }
 .seats-note strong {
   font-weight: 500; /* reduce boldness */
@@ -3063,6 +3064,8 @@ body {
 .benefit-icon-enhanced {
   width: 49.3px; /* Increased by 10% from 44.8px */
   height: 49.3px; /* Increased by 10% from 44.8px */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 13.9px; /* Increased by 10% from 12.6px */
   display: flex;
   align-items: center;
@@ -3071,7 +3074,12 @@ body {
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Skill Development - icon sizing retained below */
+/* Skill Development - Gray */
+.enhanced-benefit-card:nth-child(1) .benefit-icon-enhanced {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
 
 .enhanced-benefit-card:nth-child(1) .benefit-icon-enhanced svg {
   width: 21.6px; /* Increased by 10% from 19.6px */
@@ -3080,7 +3088,12 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Travel - icon sizing retained below */
+/* Travel - Gray */
+.enhanced-benefit-card:nth-child(2) .benefit-icon-enhanced {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
 
 .enhanced-benefit-card:nth-child(2) .benefit-icon-enhanced svg {
   width: 21.6px; /* Increased by 10% from 19.6px */
@@ -3089,7 +3102,12 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Community - icon sizing retained below */
+/* Community - Gray */
+.enhanced-benefit-card:nth-child(3) .benefit-icon-enhanced {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
 
 .enhanced-benefit-card:nth-child(3) .benefit-icon-enhanced svg {
   width: 21.6px; /* Increased by 10% from 19.6px */
@@ -3098,7 +3116,12 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Small Group - icon sizing retained below */
+/* Small Group - Gray */
+.enhanced-benefit-card:nth-child(4) .benefit-icon-enhanced {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
 
 .enhanced-benefit-card:nth-child(4) .benefit-icon-enhanced svg {
   width: 21.6px; /* Increased by 10% from 19.6px */
@@ -3107,7 +3130,12 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Career Advice - icon sizing retained below */
+/* Career Advice - Gray */
+.enhanced-benefit-card:nth-child(5) .benefit-icon-enhanced {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
 
 .enhanced-benefit-card:nth-child(5) .benefit-icon-enhanced svg {
   width: 21.6px; /* Increased by 10% from 19.6px */
@@ -3116,18 +3144,11 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Photobook - icon sizing retained below */
-
-/* Override: Make icon container transparent with green border only */
-.enhanced-benefit-card .benefit-icon-enhanced {
-  background: transparent !important;
-  border: 2px solid var(--accent, #96BC21) !important;
-  box-shadow: none !important;
-}
-
-/* Keep SVG icons visible; no fill behind */
-.enhanced-benefit-card .benefit-icon-enhanced svg {
-  color: #ffffff;
+/* Photobook - Gray */
+.enhanced-benefit-card:nth-child(6) .benefit-icon-enhanced {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .enhanced-benefit-card:nth-child(6) .benefit-icon-enhanced svg {
@@ -3135,6 +3156,68 @@ body {
   height: 21.6px; /* Increased by 10% from 19.6px */
   color: #ffffff;
   transition: all 0.3s ease;
+}
+
+/* Override: make icon square transparent with thin green border */
+.enhanced-benefit-card .benefit-icon-enhanced {
+  background: transparent !important;
+  border: 1px solid var(--accent, #96BC21) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Ensure the icon glyph stays white inside the border-only square */
+.enhanced-benefit-card .benefit-icon-enhanced svg {
+  color: #ffffff !important;
+  fill: currentColor;
+}
+
+/* Override Tailwind bg-[#F6F7F3] class to make icon containers transparent with green border */
+div[class*="bg-[#F6F7F3]"] {
+  background-color: transparent !important;
+  border: 1px solid var(--accent, #96BC21) !important;
+  box-shadow: none !important;
+}
+
+/* Make social icons white and visible on transparent backgrounds */
+.social-icon {
+  background: transparent !important;
+  border: 1px solid var(--accent, #96BC21) !important;
+  color: #ffffff !important;
+}
+
+.social-icon svg {
+  color: #ffffff !important;
+  fill: currentColor !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.social-icon svg path {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+.social-icon:hover {
+  background: rgba(150, 188, 33, 0.1) !important;
+  border-color: var(--accent, #96BC21) !important;
+  color: #ffffff !important;
+}
+
+.social-icon:hover svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+.social-icon:hover svg path {
+  fill: #ffffff !important;
+}
+
+/* Override glass effect to be blackish instead of bluish */
+.glass {
+  background: rgba(0, 0, 0, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 /* Individual icon hover effects removed */
