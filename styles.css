@@ -1400,6 +1400,29 @@ body {
   }
 }
 
+/* Voucher Badge Below Button Styles */
+.voucher-badge-below {
+  display: inline-block;
+  background: #000; /* solid black background */
+  color: #ffffff; /* white text */
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 12px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15) inset; /* subtle inner border for definition */
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 768px) {
+  .voucher-badge-below {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+  }
+}
+
 
 /* Inline two-line seats note aligned with heading */
 .seats-note {

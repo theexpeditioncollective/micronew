@@ -615,7 +615,7 @@
                     class="inline-flex items-baseline gap-1 leading-none">Tribe!<span class="seats-note">only  100
                         seats <br>available</span></span></h3>
               </div>
-              <form id="waitlistHero" action="https://formsubmit.co/info@theexpeditioncollective.in" method="POST"
+              <form id="waitlistHero" action="https://formsubmit.co/theexpeditioncollectiveweb@gmail.com" method="POST"
                 class="mt-2 md:mt-3 space-y-4 md:space-y-5 pointer-events-auto" novalidate>
                 <div class="grid md:grid-cols-2 gap-4">
                   <label class="block">
@@ -654,13 +654,15 @@
                 <!-- Honeypot field for bots -->
                 <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
                 <div class="relative">
-                  <span class="voucher-badge">₹ 1000 voucher included</span>
                   <button
                     class="btn w-full rounded-2xl px-6 py-3 border-2 border-[#96BC21] text-white font-semibold shadow-xl bg-transparent"
                     type="submit">Claim Your Spot</button>
                 </div>
+                <div class="mt-2">
+                  <span class="voucher-badge-below">₹ 1000 voucher included</span>
+                </div>
                 <p id="formStatusHero" class="text-xs text-slate-400" role="status" aria-live="polite"></p>
-                <p class="text-xs text-white">By joining, you agree to receive occasional insider updates. No Spams.
+                <p class="text-xs text-slate-500">By joining, you agree to receive occasional insider updates. No Spams.
                   Unsubscribe anytime.</p>
               </form>
             </div>
@@ -681,7 +683,7 @@
           <span class="ghost-word">What's</span> <span class="ghost-word">in</span> <span class="ghost-word">it</span>
           <span class="ghost-word">for</span> <span class="ghost-word">me?</span>
         </h2>
-        <p class="text-slate-400 mt-3">An exclusive club for the curious, the seekers, the explorers.</p>
+        <p class="text-white mt-3">An exclusive club for the curious, the seekers, the explorers.</p>
       </div>
       
       <!-- Benefits Cards Grid - Centered and Responsive -->
@@ -865,7 +867,7 @@
       <button id="closeModal" class="absolute right-4 top-4 text-slate-400 hover:text-white z-20">✕</button>
       <h4 class="text-3xl font-extrabold text-center">🎉 Welcome, Explorer! 🎉</h4>
       <p class="text-slate-300 mt-2">Welcome Explorer! You’re officially inside <span class="font-semibold">&ldquo;The
-          Inner Circle&rdquo;</span>.</p>
+          TEC Tribe&rdquo;</span>.</p>
       <!-- <p class="text-slate-300 mt-2 text-center">Your adventure begins now. Get ready for an extraordinary journey!</p> -->
       <a href="#" id="dismiss"
         class="mt-8 mx-auto block w-fit px-8 py-3 rounded-xl border-2 border-[#96BC21] text-white font-semibold bg-transparent hover:bg-[#96BC21] transition-colors duration-300">Continue Journey</a>
@@ -1023,10 +1025,10 @@
           // Also mirror update to the other meter if exists
           if (scope.mirrorScope) { decrementMeter(scope.mirrorScope); }
 
-          // Show full-screen confetti celebration without modal
+          modal.classList.remove('hidden');
           runConfetti();
           if (statusEl) {
-            statusEl.textContent = '🎉 Success! Welcome to The Inner Circle, Explorer!';
+            statusEl.textContent = 'Success! You are in.';
             statusEl.classList.remove('text-rose-400');
             statusEl.style.color = '#96BC21';
           }
@@ -1103,21 +1105,8 @@
 
     // Full-screen confetti celebration
     function runConfetti() {
-      // Create full-screen canvas dynamically
-      let c = document.getElementById('confetti-celebration');
-      if (!c) {
-        c = document.createElement('canvas');
-        c.id = 'confetti-celebration';
-        c.style.position = 'fixed';
-        c.style.top = '0';
-        c.style.left = '0';
-        c.style.width = '100vw';
-        c.style.height = '100vh';
-        c.style.pointerEvents = 'none';
-        c.style.zIndex = '9999';
-        document.body.appendChild(c);
-      }
-      
+      const c = document.getElementById('confetti');
+      if (!c) return; 
       const ctx = c.getContext('2d');
       const W = c.width = window.innerWidth * 2; // hi‑dpi
       const H = c.height = window.innerHeight * 2;
@@ -1164,15 +1153,11 @@
           ctx.restore();
         });
         
-        if (t < maxT) {
-          requestAnimationFrame(tick);
-        } else {
-          // Clean up - remove canvas after animation
-          setTimeout(() => {
-            if (c && c.parentNode) {
-              c.parentNode.removeChild(c);
-            }
-          }, 500);
+        if (t < maxT) requestAnimationFrame(tick);
+        else {
+          // Fade out
+          ctx.globalAlpha = Math.max(0, 1 - (t - maxT) / 1000);
+          if (ctx.globalAlpha > 0) requestAnimationFrame(tick);
         }
       }
       tick();
