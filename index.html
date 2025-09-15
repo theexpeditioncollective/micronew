@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expedition Collective — Early Access</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      /* Core palette (brand-only + white) */
+      --bg: #070814;
+      --surface: #0b1224;
+      /* slightly lighter surface */
+      --ink: #e6edf6;
+      --muted: #9fb0c5;
+      --accent: #96BC21;
+      /* brand lime */
+      --primary: #96BC21;
+      /* unify primary to brand */
+      --cta-grad: linear-gradient(90deg, #96BC21 0%, #ffffff 100%);
+      --card: rgba(14, 18, 36, 0.8);
+      --card-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+      --card-shadow-hover: 0 18px 50px rgba(2, 6, 23, 0.75);
+      --radius-lg: 24px;
+      --base-font-size: 16px;
+    }
+
+    /* Light theme overrides (applies when documentElement has data-theme="light") */
+    [data-theme="light"] {
+      --bg: #f7fafc;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --accent: #06b6d4;
+      --primary: #2563eb;
+      --card: rgba(255, 255, 255, 0.85);
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 800px at 80% -10%, #1e274a50, transparent 60%),
+        radial-gradient(900px 700px at -10% 20%, #0ea5e920, transparent 60%),
+        radial-gradient(800px 600px at 110% 90%, #22d3ee10, transparent 60%),
+        var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* Subtle noise texture */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><filter id="n"><feTurbulence baseFrequency="0.7" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.05"/></svg>');
+      mix-blend-mode: soft-light;
+      opacity: .35;
+    }
+
+    .glass {
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(59, 67, 101, 0.45);
+      box-shadow: var(--card-shadow);
+      border-radius: var(--radius-lg);
+      transition: transform .28s cubic-bezier(.2, .9, .2, 1), box-shadow .28s cubic-bezier(.2, .9, .2, 1);
+      will-change: transform, box-shadow;
+    }
+
+    .text-glow {
+      text-shadow: 0 10px 30px #000a, 0 0 24px #96BC2140;
+    }
+
+    .hero-text-shadow {
+      text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 8px 16px rgba(0, 0, 0, 0.2),
+        0 0 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+      transition: transform .22s cubic-bezier(.2, .9, .2, 1), box-shadow .22s cubic-bezier(.2, .9, .2, 1);
+    }
+
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(10, 16, 50, 0.45);
+    }
+
+    .btn:active {
+      transform: translateY(-2px) scale(.998);
+    }
+
+    .btn.cta {
+      background: var(--cta-grad);
+    }
+
+    .btn::after {
+      content: "";
+      position: absolute;
+      inset: -200% -50%;
+      transform: rotate(25deg);
+      background: linear-gradient(90deg, transparent, #ffffff25, transparent);
+      transition: transform .8s ease;
+    }
+
+    .btn:hover::after {
+      transform: translateX(200%) rotate(25deg);
+    }
+
+    .card-spot:hover {
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: var(--card-shadow-hover)
+    }
+
+    .aurora {
+      position: absolute;
+      inset: auto;
+      width: 1200px;
+      height: 1200px;
+      filter: blur(120px);
+      opacity: .35;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .aurora.a {
+      top: -400px;
+      right: -300px;
+      background: radial-gradient(closest-side, #96BC21, transparent);
+    }
+
+    .aurora.b {
+      bottom: -500px;
+      left: -300px;
+      background: radial-gradient(closest-side, #96BC21, transparent);
+    }
+
+    .ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      padding: 1px;
+      background: linear-gradient(120deg, #96BC21, #ffffff, #96BC21);
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: .4;
+      pointer-events: none
+    }
+
+    /* Ensure inputs show text cursor */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      cursor: text;
+    }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      border-top-color: rgba(255, 255, 255, 0.95);
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .error-text {
+      color: #fb7185;
+      font-size: .75rem;
+      margin-top: .35rem
+    }
+
+    /* Back to top button styles */
+    #toTopBtn {
+      backdrop-filter: blur(6px);
+    }
+
+    #toTopBtn.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto
+    }
+
+    #toTopBtn.hide {
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none
+    }
+
+    .grid-hover::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(90deg, #96BC21, #ffffff);
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity .25s
+    }
+
+    .grid-hover:hover::before {
+      opacity: .6
+    }
+
+    .fade-in {
+      animation: fade .8s ease both;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(10px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* Ghost word animation (reusable) */
+    .ghost-seq .ghost-word {
+      opacity: 0;
+      filter: blur(10px) brightness(1.15);
+      transform: translateY(26px);
+      display: inline-block;
+      will-change: opacity, transform, filter;
+    }
+
+    .ghost-seq .ghost-word.show {
+      animation: ghostIn .9s ease-out forwards;
+    }
+
+    @keyframes ghostIn {
+      0% {
+        opacity: 0;
+        filter: blur(10px) brightness(1.15);
+        transform: translateY(26px);
+      }
+
+      25% {
+        opacity: .75;
+        filter: blur(6px) brightness(1.07);
+        transform: translateY(12px);
+      }
+
+      55% {
+        opacity: 1;
+        filter: blur(3px) brightness(1.02);
+        transform: translateY(4px);
+      }
+
+      80% {
+        filter: blur(1px) brightness(1);
+        transform: translateY(0);
+      }
+
+      100% {
+        opacity: 1;
+        filter: blur(0) brightness(1);
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .ghost-seq .ghost-word {
+        opacity: 1 !important;
+        filter: none !important;
+        transform: none !important;
+        animation: none !important;
+      }
+    }
+
+    /* Loader Styles */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #070814;
+      z-index: 999;
+      transition: opacity .4s ease;
+    }
+
+    .loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      font-family: inherit
+    }
+
+    .loading-text {
+      color: var(--accent);
+      font-size: 14pt;
+      font-weight: 600;
+      letter-spacing: .5px
+    }
+
+    .loading-text .dot {
+      margin-left: 3px;
+      animation: blink 1.5s infinite
+    }
+
+    .loading-text .dot:nth-child(2) {
+      animation-delay: .3s
+    }
+
+    .loading-text .dot:nth-child(3) {
+      animation-delay: .6s
+    }
+
+    .loading-bar-background {
+      --height: 30px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 5px;
+      width: 220px;
+      height: var(--height);
+      background: #212121;
+      box-shadow: #0c0c0c -2px 2px 4px 0 inset;
+      border-radius: calc(var(--height)/2)
+    }
+
+    .loading-bar {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      --height: 20px;
+      width: 0%;
+      height: var(--height);
+      overflow: hidden;
+      background: var(--cta-grad);
+      border-radius: calc(var(--height)/2);
+      animation: loading 3.6s ease-out infinite
+    }
+
+    .white-bars-container {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 18px
+    }
+
+    .white-bar {
+      background: linear-gradient(-45deg, #fff 0%, rgba(255, 255, 255, 0) 70%);
+      width: 10px;
+      height: 45px;
+      opacity: .35;
+      transform: rotate(45deg)
+    }
+
+    @keyframes loading {
+      0% {
+        width: 0
+      }
+
+      80% {
+        width: 100%
+      }
+
+      100% {
+        width: 100%
+      }
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 0
+      }
+
+      50% {
+        opacity: 1
+      }
+    }
+
+    /* Ring animation for glass cards */
+    .ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 1rem;
+      padding: 1px;
+      background: linear-gradient(90deg, rgba(150, 188, 33, 0.5), rgba(255, 255, 255, 0.2));
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .glass:hover .ring {
+      opacity: 1;
+    }
+
+    /* Enhanced glass card hover effects */
+    .glass:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    /* CSS Loader (new) */
+    #css-loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #181824;
+      z-index: 9999;
+      opacity: 0;
+      animation: loaderFadeIn 0.7s cubic-bezier(.77,0,.18,1) forwards;
+      transition: opacity 0.5s cubic-bezier(.77,0,.18,1);
+    }
+
+    #css-loader .loader-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 16px;
+      padding: 32px 36px;
+      background: rgba(24,24,36,0.98);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    }
+
+    #css-loader .loader-spinner {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 5px solid #23243a;
+      border-top: 5px solid #a3e635;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    #css-loader .loader-text {
+      margin-top: 8px;
+      font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+      color: #e0e0e0;
+      font-size: 1.08rem;
+      letter-spacing: 0.04em;
+      font-weight: 400;
+      opacity: 0.85;
+    }
+
+    @keyframes loaderFadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes loaderFadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+
+<body class="relative">
+  <!-- CSS Loader -->
+  <div id="css-loader" role="status" aria-live="polite" aria-label="Page loading">
+    <div class="loader-inner">
+      <div class="loader-spinner"></div>
+      <span class="loader-text">Loading...</span>
+    </div>
+  </div>
+  <!-- Dim overlay for all except hero section -->
+  <div class="background-dim"></div>
+  <!-- Standard Site Header -->
+  <header class="header header-blurred">
+    <div class="logo">
+      <div class="logo-wrapper" id="logoWrapper">
+        <img src="images/image1.png" class="logotype" id="logotype" alt="Logotype" />
+        <img src="images/image2.png" class="monogram" id="monogram" alt="Monogram" />
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar (copied from other pages for consistency) -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-content">
+      <button class="close-btn" id="close-sidebar">&times;</button>
+      <div class="sidebar-logo">
+        <h2>The Expedition Collective</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="who-we-are.html">Who are we?</a></li>
+          <li><a href="upcoming.html">Upcoming Expeditions</a></li>
+          <li><a href="connect.html">Let's Connect?</a></li>
+        </ul>
+      </nav>
+      <div class="social-icons">
+        <a href="#" class="social-icon instagram">
+          <svg viewBox="0 0 24 24" fill="#ffffff">
+            <path fill="#ffffff"
+              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+          </svg>
+        </a>
+        <a href="#" class="social-icon facebook">
+          <svg viewBox="0 0 24 24" fill="#ffffff">
+            <path fill="#ffffff"
+              d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+          </svg>
+        </a>
+        <a href="#" class="social-icon twitter">
+          <svg viewBox="0 0 24 24" fill="#ffffff">
+            <path fill="#ffffff"
+              d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+          </svg>
+        </a>
+        <a href="#" class="social-icon linkedin">
+          <svg viewBox="0 0 24 24" fill="#ffffff">
+            <path fill="#ffffff"
+              d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+          </svg>
+        </a>
+        <a href="#" class="social-icon youtube">
+          <svg viewBox="0 0 24 24" fill="#ffffff">
+            <path fill="#ffffff"
+              d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 1.371.505 1.371.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+          </svg>
+        </a>
+        <a href="#" class="social-icon tiktok">
+          <svg viewBox="0 0 24 24" fill="#ffffff">
+            <path fill="#ffffff"
+              d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden">
+    <!-- Background Video -->
+    <video class="absolute inset-0 w-full h-full object-cover z-0" src="videos/bg.mp4" autoplay loop muted
+      playsinline></video>
+    <div class="aurora a"></div>
+    <div class="aurora b"></div>
+    <div class="max-w-7xl mx-auto px-6 pt-8 pb-12 md:pt-14 md:pb-24 relative z-10">
+      <div class="max-w-7xl mx-auto px-6 pt-8 pb-12 md:pt-14 md:pb-24 relative z-10">
+        <div class="mb-12 text-center">
+          <h1 id="heroHeadline" class="ghost-seq text-3xl md:text-5xl font-extrabold"
+            aria-label="Beyond itineraries. Beyond checklists.">
+            <span class="block whitespace-normal md:whitespace-nowrap line" aria-hidden="true">
+              <span class="ghost-word mt-4 md:mt-0">Beyond</span> <span class="ghost-word">itineraries.</span> <span
+                class="ghost-word">Beyond</span> <span class="ghost-word">checklists.</span>
+            </span>
+
+          </h1>
+        </div>
+        <div class="grid lg:grid-cols-12 gap-8 items-start">
+          <div class="lg:col-span-7 space-y-7 pl-4 sm:pl-6 lg:pl-10 xl:pl-14">
+            <!-- <p class="uppercase tracking-[0.25em] text-xs text-slate-400">Invitation Only</p> -->
+            <div class="space-y-2 md:space-y-3">
+              <p class="text-3xl md:text-5xl font-extrabold leading-snug mb-6 md:mb-8" style="color: var(--ink)">
+                #Beyondatrip</p>
+              <p class="text-white text-lg md:text-2xl leading-tight max-w-2xl font-medium">Step into
+                rivers that remember, <br> Mountains that breathe,<br> and villages where time lingers.</p>
+              <p class="text-white text-lg md:text-2xl leading-tight max-w-2xl font-medium">Capture
+                fleeting truths through your lens,<br> lose yourself in sacred cities, <br> and find rhythm in artisans'
+                hands.</p>
+              <p class="text-white text-lg md:text-2xl leading-tight max-w-2xl font-medium">Let
+                creativity heal where words cannot,<br> and draw strength from coasts and forests</p>
+              <p class="text-white text-lg md:text-2xl leading-tight max-w-2xl font-medium">This is not
+                escape, but return <br> - to community, <strong>to yourself.</strong></p>
+            </div>
+
+
+
+          </div>
+          <!-- Spotlight card replaced with Claim your spot form -->
+          <div class="lg:col-span-5 pr-4 sm:pr-6 lg:pr-10 xl:pr-14">
+            <div class="glass rounded-3xl p-8 lg:p-10 relative overflow-hidden" style="z-index:1;">
+              <div class="ring rounded-3xl" aria-hidden="true"></div>
+              <div class="flex items-baseline gap-1">
+                <h3 class="text-3xl md:text-4xl font-extrabold leading-tight mb-1 md:mb-2">Be part of <br class="md:hidden">the TEC <span
+                    class="inline-flex items-baseline gap-1 leading-none">Tribe!<span class="seats-note">only 100
+                        seats</span></span></h3>
+              </div>
+              <form id="waitlistHero" action="https://formsubmit.co/theexpeditioncollectiveweb@gmail.com" method="POST"
+                class="mt-2 md:mt-3 space-y-4 md:space-y-5 pointer-events-auto" novalidate>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <label class="block">
+                    <span class="text-xs text-slate-400">Name</span>
+                    <input required id="nameHero" name="name" type="text"
+                      class="mt-1 w-full rounded-xl bg-white/20 border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-[#96BC21] pointer-events-auto"
+                      placeholder="Your Name" />
+                  </label>
+                  <label class="block">
+                    <span class="text-xs text-slate-400">Email</span>
+                    <input required id="emailHero" name="email" type="email"
+                      class="mt-1 w-full rounded-xl bg-white/20 border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-[#96BC21] pointer-events-auto"
+                      placeholder="Your Email" />
+                  </label>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <label class="block">
+                    <span class="text-xs text-slate-400">IG Handle (optional)</span>
+                    <input id="handleHero" name="handle" type="text"
+                      class="mt-1 w-full rounded-xl bg-white/20 border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-[#96BC21] pointer-events-auto"
+                      placeholder="@expedition" />
+                  </label>
+                  <label class="block">
+                    <span class="text-xs text-slate-400">Phone Number (optional)</span>
+                    <input id="phoneHero" name="phone" type="tel" inputmode="tel" pattern="[0-9+\-()\s]*"
+                      class="mt-1 w-full rounded-xl bg-white/20 border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-[#96BC21] pointer-events-auto"
+                      placeholder="+91 98765 43210" />
+                  </label>
+                </div>
+                <input type="hidden" name="form_name" value="Early Access Waitlist" />
+                <input type="hidden" name="_subject" value="New Early Access Waitlist Submission" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_template" value="table" />
+                <input type="hidden" name="_autoresponse"
+                  value="Thanks Explorer! Your request for early access is received. We will be in touch soon." />
+                <!-- Honeypot field for bots -->
+                <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+                <div class="relative">
+                  <button
+                    class="btn w-full rounded-2xl px-6 py-3 border-2 border-[#96BC21] text-white font-semibold shadow-xl bg-transparent"
+                    type="submit">Claim Your Spot</button>
+                </div>
+                <div class="mt-2">
+                  <span class="voucher-badge-below">₹ 1000 voucher included</span>
+                </div>
+                <p id="formStatusHero" class="text-xs text-slate-400" role="status" aria-live="polite"></p>
+                <p class="text-xs text-slate-500">By joining, you agree to receive occasional insider updates. No Spams.
+                  Unsubscribe anytime.</p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decorative bottom wave removed -->
+  </section>
+
+
+
+  <!-- PERKS -->
+  <section id="perks" class="relative py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="ghost-seq text-3xl md:text-5xl font-extrabold" aria-label="What's in it for me?">
+          <span class="ghost-word">What's</span> <span class="ghost-word">in</span> <span class="ghost-word">it</span>
+          <span class="ghost-word">for</span> <span class="ghost-word">me?</span>
+        </h2>
+        <p class="text-white mt-3">An exclusive club for the curious, the seekers, the explorers.</p>
+      </div>
+      
+      <!-- Benefits Cards Grid - Centered and Responsive -->
+      <div class="mt-12 flex justify-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 max-w-4xl w-full px-4">
+          
+          <!-- Unlock Perks -->
+          <div class="enhanced-benefit-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="benefit-icon-wrapper">
+              <div class="icon-bg-glow"></div>
+              <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-md overflow-hidden text-black">
+                <img src="icons/perks.png" alt="Perks icon" class="w-10 h-10 object-contain" loading="lazy" />
+              </div>
+            </div>
+            <h3 class="benefit-title">Unlock Perks</h3>
+            <p class="benefit-description">Get 1000 off instantly just for
+              signing up on any upcoming
+              expeditions! Plus, enjoy ongoing perks
+              like exclusive discounts, free
+              workshops, and special
+              travel goodies.</p>
+            <div class="card-highlight"></div>
+          </div>
+
+          <!-- Early Access -->
+          <div class="enhanced-benefit-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="benefit-icon-wrapper">
+              <div class="icon-bg-glow"></div>
+              <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-md overflow-hidden text-black">
+                <img src="icons/early access.png" alt="Early access icon" class="w-10 h-10 object-contain" loading="lazy" />
+              </div>
+            </div>
+            <h3 class="benefit-title">Early Access</h3>
+            <p class="benefit-description">Stay ahead of the crowd with early
+              access to expeditions, annoucements,
+              limited-seat offers, and priority
+              booking over other travelers.</p>
+            <div class="card-highlight"></div>
+          </div>
+
+          <!-- Behind-the-Scenes -->
+          <div class="enhanced-benefit-card md:col-span-2 lg:col-span-1 md:mx-auto lg:mx-0" data-aos="fade-up" data-aos-delay="300">
+            <div class="benefit-icon-wrapper">
+              <div class="icon-bg-glow"></div>
+              <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-md overflow-hidden text-black">
+                <img src="icons/behind the scenes.png" alt="Behind the scenes icon" class="w-10 h-10 object-contain" loading="lazy" />
+              </div>
+            </div>
+            <h3 class="benefit-title">Behind-the-Scenes</h3>
+            <p class="benefit-description">Join The Expedition Collective
+              as a lifelong member—an exclusive
+              circle of artists, travelers, and explorers
+              creating unforgettable journeys
+              and impact-driven projects together.</p>
+            <div class="card-highlight"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <h3 class="ghost-seq text-3xl md:text-4xl font-extrabold" aria-label="Questions, Answered">
+          <span class="ghost-word">Questions,</span> <span class="ghost-word">Answered</span>
+        </h3>
+      </div>
+      <div class="space-y-4">
+        <details class="glass rounded-xl p-5">
+          <summary class="cursor-pointer font-semibold">What happens after I join?</summary>
+          <p class="text-slate-300 mt-2 text-sm">Instantly, you receive a <strong>welcome kit, insider updates</strong> on expeditions we are building, <strong>priority access</strong> to bookings and a voucher for <strong>₹1000</strong>. Moreover, you are a permanent member of the <strong>TEC Tribe</strong> who can avail regular benefits and exclusive access to <strong>The Collective of artists, creatives, explorers, and travellers.</strong></p>
+        </details>
+        <details class="glass rounded-xl p-5">
+          <summary class="cursor-pointer font-semibold">What is an Expedition like at TEC?</summary>
+          <p class="text-slate-300 mt-2 text-sm">An Expedition with TEC is not a trip - it’s an <strong>immersion</strong>. Into <strong>landscapes</strong> that make you pause, <strong>cultures</strong> that welcome you in, and <strong>creative skills</strong> learned from <strong>locals</strong> - with <strong>stories</strong> that unfold only when you <strong>wander deep</strong>. Let’s travel, explore and create together!
+</p>
+        </details>
+        <details class="glass rounded-xl p-5">
+          <summary class="cursor-pointer font-semibold">Who is eligible to join?</summary>
+          <p class="text-slate-300 mt-2 text-sm"><strong>You</strong>. If you're curious about what happens when you <strong>step out</strong> of your comfort zone to see what the world has to offer. If you want to <strong>live with locals</strong> and learn their <strong>traditional skills</strong>, or pick up an <strong>artform </strong> you've long forgotten. If you're finally ready to find time for yourself - to <strong>heal</strong>, to return to who you are - and make <strong>amazing friends</strong> along the way. If you want to thrive in a <strong>collective of artists, creatives, explorers, and travellers</strong>, and create movements with them. If you want to stand at the edge and ask <strong>what if?</strong> Then come - let's be <strong>curious</strong> together.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTS -->
+  <section id="contact" class="py-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h3 class="ghost-seq text-3xl md:text-5xl font-extrabold" aria-label="Contacts">
+          <span class="ghost-word">Let's Connect?</span>
+        </h3>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/theexpeditioncollective?igsh=bDR2bW5kanc0NWV1&utm_source=qr" target="_blank"
+          rel="noopener" class="group relative glass rounded-2xl p-5 flex flex-col gap-4 hover:shadow-2xl transition">
+          <div class="ring rounded-2xl"></div>
+          <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-lg">
+            <img src="icons/instagram.png" alt="Instagram icon" class="w-6 h-6 object-contain" loading="lazy" />
+          </div>
+          <div>
+            <h4 class="font-semibold text-lg">Instagram</h4>
+            <p class="text-slate-400 text-sm">Follow updates & behind‑the‑scenes.</p>
+            <span
+              class="mt-2 inline-flex items-center gap-1 text-white text-xs font-medium group-hover:translate-x-1 transition-transform">@OurInstaHandle
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg></span>
+          </div>
+        </a>
+        <!-- Phone -->
+        <div class="relative glass rounded-2xl p-5 flex flex-col gap-4">
+          <div class="ring rounded-2xl"></div>
+          <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-lg">
+            <img src="icons/phone.png" alt="Phone icon" class="w-6 h-6 object-contain" loading="lazy" />
+          </div>
+          <div>
+            <h4 class="font-semibold text-lg">Phone</h4>
+            <p class="text-slate-400 text-sm">Mon–Fri 9am–6pm IST</p>
+            <p class="mt-2 text-sm text-slate-200 select-all">+91 7896673868</p>
+            <p class="mt-1 text-sm text-slate-200 select-all">+91 6901 253 427</p>
+            <p class="mt-1 text-sm text-slate-200 select-all">+91 6003591019</p>
+          </div>
+        </div>
+        <!-- Email -->
+        <div class="relative glass rounded-2xl p-5 flex flex-col gap-4">
+          <div class="ring rounded-2xl"></div>
+          <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-lg">
+            <img src="icons/email.png" alt="Email icon" class="w-6 h-6 object-contain" loading="lazy" />
+          </div>
+          <div>
+            <h4 class="font-semibold text-lg">Email</h4>
+            <p class="text-slate-400 text-sm">We try to reply fast.</p>
+            <p class="mt-2 text-sm text-white select-all">info@expeditioncollective.in</p>
+          </div>
+        </div>
+        <!-- General Contact -->
+        <div class="relative glass rounded-2xl p-5 flex flex-col gap-4">
+          <div class="ring rounded-2xl"></div>
+          <div class="w-12 h-12 rounded-xl bg-[#F6F7F3] grid place-items-center shadow-lg">
+            <img src="icons/commuity.png" alt="Community icon" class="w-6 h-6 object-contain" loading="lazy" />
+          </div>
+          <div>
+            <h4 class="font-semibold text-lg">Collective</h4>
+            <p class="text-slate-400 text-sm">Join the TEC Tribe.</p>
+            <a href="#waitlistHero"
+              class="mt-2 inline-flex items-center gap-1 text-sm text-white font-medium hover:underline">Request access
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- FOOTER -->
+  <footer class="py-10">
+    <div
+      class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-400">
+      <p>© <span id="year"></span> Expedition Collective. All rights reserved.</p>
+      <div class="flex items-center gap-5">
+        <a class="hover:text-white" href="pdf/TEC Privacy Policy 2025.pdf" target="_blank" rel="noopener">Privacy</a>
+        <a class="hover:text-white" href="pdf/TEC Terms and Conditions 2025.pdf" target="_blank"
+          rel="noopener">Terms</a>
+        <a class="hover:text-white" href="pdf/TEC Moral Code & Code of Conduct 2025.pdf" target="_blank"
+          rel="noopener">Morals</a>
+        <a class="hover:text-white" href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div id="modal" class="fixed inset-0 hidden flex items-center justify-center bg-black/70 z-50">
+    <div class="glass rounded-3xl p-8 w-[92vw] max-w-md text-center relative">
+      <button id="closeModal" class="absolute right-4 top-4 text-slate-400 hover:text-white z-20">✕</button>
+      <h4 class="text-3xl font-extrabold text-center">🎉 Welcome, Explorer! 🎉</h4>
+      <p class="text-slate-300 mt-2">Welcome Explorer! You’re officially inside <span class="font-semibold">&ldquo;The
+          TEC Tribe&rdquo;</span>.</p>
+      <!-- <p class="text-slate-300 mt-2 text-center">Your adventure begins now. Get ready for an extraordinary journey!</p> -->
+      <a href="#" id="dismiss"
+        class="mt-8 mx-auto block w-fit px-8 py-3 rounded-xl border-2 border-[#96BC21] text-white font-semibold bg-transparent hover:bg-[#96BC21] transition-colors duration-300">Continue Journey</a>
+    </div>
+    <canvas id="confetti" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
+  </div>
+
+  <!-- BACK TO TOP BUTTON (Expedition style) -->
+  <button id="toTopBtn" aria-label="Back to top"
+    class="fixed bottom-6 right-6 z-50 -translate-y-6 opacity-0 pointer-events-none grid place-items-center rounded-full bg-[#96BC21] text-black shadow-2xl w-11 h-11 ring-1 ring-white/10 transition-all duration-300 transform hover:scale-105 focus:outline-none">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
+  <script>
+    // ---------- Utilities ----------
+    const $ = (q) => document.querySelector(q);
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return; // Ignore simple hash links
+
+        const targetEl = document.querySelector(href);
+        if (targetEl) {
+          e.preventDefault();
+          targetEl.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Year
+    $('#year').textContent = new Date().getFullYear();
+
+    // Ghost word stagger animation (multi-sequence)
+    (function () {
+      const sequences = Array.from(document.querySelectorAll('.ghost-seq'));
+      if (!sequences.length) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const root = entry.target;
+          const words = Array.from(root.querySelectorAll('.ghost-word'));
+          const base = 58;
+          const curve = t => t * t * (0.7 + 0.3 * t);
+          const total = words.length - 1;
+          // clear prior state
+          words.forEach(w => w.classList.remove('show'));
+          void root.offsetWidth; // single reflow per sequence
+          words.forEach((w, i) => {
+            const prog = total ? i / total : 0;
+            w.style.animationDelay = (curve(prog) * base * total) + 'ms';
+            w.classList.add('show');
+          });
+          // If you want only once per heading: io.unobserve(root);
+        });
+      }, { threshold: .4 });
+      sequences.forEach(seq => io.observe(seq));
+    })();
+
+    // Seats logic (manual values)
+    const totalSeats = 100;
+    const leftInitial = 97;
+    const clampPct = (p) => Math.max(0, Math.min(100, Math.round(p)));
+    const setWidth = (el, p) => { if (el) el.style.width = Math.min(100, Math.max(5, p)) + '%'; };
+
+    function initMeter(scope) {
+      // scope: { badgeId, barId, leftLabelId?, leftTextId?, progressId? }
+      const left = leftInitial;
+      const pct = clampPct((left / totalSeats) * 100);
+      if (scope.leftLabelId) {
+        const el = document.getElementById(scope.leftLabelId);
+        if (el) el.textContent = `${left} / ${totalSeats} left`;
+      }
+      if (scope.leftTextId) {
+        const el = document.getElementById(scope.leftTextId);
+        if (el) el.textContent = left;
+      }
+      const badge = document.getElementById(scope.badgeId);
+      if (badge) badge.textContent = `${left} left`;
+      setWidth(document.getElementById(scope.barId), pct);
+      if (scope.progressId) setWidth(document.getElementById(scope.progressId), pct);
+    }
+
+    function decrementMeter(scope) {
+      const leftTextEl = scope.leftTextId ? document.getElementById(scope.leftTextId) : null;
+      let currentLeft = leftTextEl ? Number(leftTextEl.textContent) : leftInitial;
+      const newLeft = Math.max(0, currentLeft - 1);
+      if (leftTextEl) leftTextEl.textContent = newLeft;
+      if (scope.leftLabelId) {
+        const label = document.getElementById(scope.leftLabelId);
+        if (label) label.textContent = `${newLeft} / ${totalSeats} left`;
+      }
+      const remPct = clampPct((newLeft / totalSeats) * 100);
+      const badge = document.getElementById(scope.badgeId);
+      if (badge) badge.textContent = `${newLeft} left`;
+      setWidth(document.getElementById(scope.barId), remPct);
+      if (scope.progressId) setWidth(document.getElementById(scope.progressId), remPct);
+    }
+
+    // Initialize join-section meter if present
+    initMeter({ badgeId: 'spotsBadge', barId: 'spotsBar', leftLabelId: 'spotsLeftLabel', leftTextId: 'spotsLeftText', progressId: 'spotsProgress' });
+
+    // Form handling
+    const form = $('#waitlist');
+    const formHero = $('#waitlistHero');
+    const modal = $('#modal');
+    const closeModal = () => modal.classList.add('hidden');
+
+    // Simple real-time validation
+    const emailInput = $('#email');
+    const nameInput = $('#name');
+    const handleInput = $('#handle');
+    function showError(el, msg) {
+      let next = el.nextElementSibling;
+      if (!next || !next.classList || !next.classList.contains('error-text')) {
+        next = document.createElement('div'); next.className = 'error-text'; el.parentNode.appendChild(next);
+      }
+      next.textContent = msg;
+    }
+    function clearError(el) {
+      let next = el.nextElementSibling; if (next && next.classList && next.classList.contains('error-text')) next.remove();
+    }
+    function validEmail(v) { return /\S+@\S+\.\S+/.test(v); }
+    emailInput?.addEventListener('input', () => {
+      if (emailInput.value && !validEmail(emailInput.value)) showError(emailInput, 'Please enter a valid email'); else clearError(emailInput);
+    });
+    nameInput?.addEventListener('input', () => { if (nameInput.value.trim().length < 2) showError(nameInput, 'Enter your name'); else clearError(nameInput); });
+
+    async function handleSubmit(e, formEl, scope) {
+      e.preventDefault();
+      const fd = new FormData(formEl);
+      const data = Object.fromEntries(fd.entries());
+      if (!data.name || !validEmail(data.email)) {
+        if (!data.name) showError(formEl.querySelector('input[name="name"]'), 'Enter your name');
+        if (!validEmail(data.email)) showError(formEl.querySelector('input[name="email"]'), 'Please enter a valid email');
+        return;
+      }
+      const submitBtn = formEl.querySelector('button[type="submit"]');
+      const statusEl = scope.statusId ? document.getElementById(scope.statusId) : null;
+      const origHtml = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner" aria-hidden="true"></span> Sending';
+      if (statusEl) statusEl.textContent = '';
+      try {
+        // FormSubmit returns 200 with JSON when Accept: application/json
+        const res = await fetch(formEl.action, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
+        if (res.ok) {
+          // Update counters (optimistic UI)
+          decrementMeter({ badgeId: scope.badgeId, barId: scope.barId, leftLabelId: scope.leftLabelId, leftTextId: scope.leftTextId, progressId: scope.progressId });
+          // Also mirror update to the other meter if exists
+          if (scope.mirrorScope) { decrementMeter(scope.mirrorScope); }
+
+          modal.classList.remove('hidden');
+          runConfetti();
+          if (statusEl) {
+            statusEl.textContent = 'Success! You are in.';
+            statusEl.classList.remove('text-rose-400');
+            statusEl.style.color = '#96BC21';
+          }
+          formEl.reset();
+        } else {
+          const dataErr = await res.json().catch(() => ({}));
+          const msg = dataErr.errors?.map(e => e.message).join(', ') || 'Something went wrong. Please try again later.';
+          if (statusEl) {
+            statusEl.textContent = msg;
+            statusEl.style.color = '';
+            statusEl.classList.add('text-rose-400');
+          }
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.textContent = 'Network error. Please retry.';
+          statusEl.style.color = '';
+          statusEl.classList.add('text-rose-400');
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = origHtml;
+      }
+    }
+
+    // Wire up both forms
+    form?.addEventListener('submit', (e) => handleSubmit(e, form, { statusId: 'formStatus', badgeId: 'spotsBadge', barId: 'spotsBar', leftLabelId: 'spotsLeftLabel', leftTextId: 'spotsLeftText', progressId: 'spotsProgress' }));
+    formHero?.addEventListener('submit', (e) => handleSubmit(e, formHero, { statusId: 'formStatusHero' }));
+
+    $('#dismiss')?.addEventListener('click', (e) => { e.preventDefault(); closeModal(); });
+    $('#closeModal')?.addEventListener('click', closeModal);
+    modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    // Back to Top Button Logic (smooth show/hide)
+    const toTopBtn = $('#toTopBtn');
+    const showThreshold = 300;
+    const footerEl = document.querySelector('footer');
+
+    // Adjust button bottom offset if footer is visible to avoid overlap
+    function adjustForFooter() {
+      if (!footerEl || !toTopBtn) return;
+      const footerRect = footerEl.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const base = 24; // 1.5rem base gap
+      if (footerRect.top < vh) {
+        // Amount of footer occupying viewport
+        const overlap = Math.max(0, vh - footerRect.top);
+        toTopBtn.style.bottom = (base + overlap + 8) + 'px';
+      } else {
+        toTopBtn.style.bottom = base + 'px';
+      }
+    }
+    const updateToTop = () => {
+      if (window.scrollY > showThreshold) {
+        toTopBtn.classList.add('show');
+        toTopBtn.classList.remove('hide');
+      } else {
+        toTopBtn.classList.add('hide');
+        toTopBtn.classList.remove('show');
+      }
+      adjustForFooter();
+    };
+    updateToTop();
+    window.addEventListener('scroll', updateToTop, { passive: true });
+    window.addEventListener('resize', adjustForFooter);
+
+    toTopBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // subtle pulse while scrolling
+      toTopBtn.classList.add('animate-pulse');
+      setTimeout(() => toTopBtn.classList.remove('animate-pulse'), 700);
+    });
+
+    // Full-screen confetti celebration
+    function runConfetti() {
+      const c = document.getElementById('confetti');
+      if (!c) return; 
+      const ctx = c.getContext('2d');
+      const W = c.width = window.innerWidth * 2; // hi‑dpi
+      const H = c.height = window.innerHeight * 2;
+      const N = 200; // More particles for full screen
+      const colors = ['#96BC21', '#22d3ee', '#7cf3c9', '#5a7bff', '#ff6b6b', '#ffd93d'];
+      
+      const parts = Array.from({ length: N }, (_, i) => ({
+        x: Math.random() * W,
+        y: -Math.random() * H * 0.8, // Start much higher for continuous flow
+        r: 3 + Math.random() * 8,
+        vx: -3 + Math.random() * 6,
+        vy: 3 + Math.random() * 5, // Slightly slower fall for longer visibility
+        a: Math.random() * Math.PI * 2,
+        va: 0.05 + Math.random() * 0.1,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        gravity: 0.2 + Math.random() * 0.15 // Slightly reduced gravity for longer fall
+      }));
+      
+      let t = 0; 
+      const maxT = 3000; // 3 seconds
+      
+      function tick() {
+        t += 16; 
+        ctx.clearRect(0, 0, W, H);
+        
+        parts.forEach((p, index) => {
+          p.x += p.vx; 
+          p.y += p.vy; 
+          p.a += p.va;
+          p.vy += p.gravity; // Add gravity effect
+          
+          // Only draw particles that are still on screen
+          if (p.y <= H + 50) {
+            ctx.save(); 
+            ctx.translate(p.x, p.y); 
+            ctx.rotate(p.a);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.r, -p.r, p.r * 2, p.r * 2);
+            ctx.restore();
+          }
+        });
+        
+        if (t < maxT) {
+          requestAnimationFrame(tick);
+        }
+      }
+      tick();
+    }
+
+    // Fade-ins on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('fade-in') })
+    }, { threshold: .1 });
+    document.querySelectorAll('#perks .glass, #faq details').forEach(el => observer.observe(el));
+
+    // (Theme toggle removed to match standard header across site)
+    // Loader dismissal (CSS loader)
+    window.addEventListener('load', function () {
+      var loader = document.getElementById('css-loader');
+      if (loader) {
+        loader.style.animation = 'loaderFadeOut 0.6s cubic-bezier(.77,0,.18,1) forwards';
+        setTimeout(function () {
+          if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 650);
+      }
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+
+</html>
