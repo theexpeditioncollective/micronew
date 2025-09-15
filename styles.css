@@ -3063,8 +3063,6 @@ body {
 .benefit-icon-enhanced {
   width: 49.3px; /* Increased by 10% from 44.8px */
   height: 49.3px; /* Increased by 10% from 44.8px */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-radius: 13.9px; /* Increased by 10% from 12.6px */
   display: flex;
   align-items: center;
@@ -3073,12 +3071,7 @@ body {
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Skill Development - Gray */
-.enhanced-benefit-card:nth-child(1) .benefit-icon-enhanced {
-  background: linear-gradient(135deg, #6b7280, #4b5563);
-  border: 1px solid rgba(107, 114, 128, 0.3);
-  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
+/* Skill Development - icon sizing retained below */
 
 .enhanced-benefit-card:nth-child(1) .benefit-icon-enhanced svg {
   width: 21.6px; /* Increased by 10% from 19.6px */
@@ -3087,12 +3080,7 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Travel - Gray */
-.enhanced-benefit-card:nth-child(2) .benefit-icon-enhanced {
-  background: linear-gradient(135deg, #6b7280, #4b5563);
-  border: 1px solid rgba(107, 114, 128, 0.3);
-  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
+/* Travel - icon sizing retained below */
 
 .enhanced-benefit-card:nth-child(2) .benefit-icon-enhanced svg {
   width: 21.6px; /* Increased by 10% from 19.6px */
@@ -3101,12 +3089,7 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Community - Gray */
-.enhanced-benefit-card:nth-child(3) .benefit-icon-enhanced {
-  background: linear-gradient(135deg, #6b7280, #4b5563);
-  border: 1px solid rgba(107, 114, 128, 0.3);
-  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
+/* Community - icon sizing retained below */
 
 .enhanced-benefit-card:nth-child(3) .benefit-icon-enhanced svg {
   width: 21.6px; /* Increased by 10% from 19.6px */
@@ -3115,12 +3098,7 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Small Group - Gray */
-.enhanced-benefit-card:nth-child(4) .benefit-icon-enhanced {
-  background: linear-gradient(135deg, #6b7280, #4b5563);
-  border: 1px solid rgba(107, 114, 128, 0.3);
-  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
+/* Small Group - icon sizing retained below */
 
 .enhanced-benefit-card:nth-child(4) .benefit-icon-enhanced svg {
   width: 21.6px; /* Increased by 10% from 19.6px */
@@ -3129,12 +3107,7 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Career Advice - Gray */
-.enhanced-benefit-card:nth-child(5) .benefit-icon-enhanced {
-  background: linear-gradient(135deg, #6b7280, #4b5563);
-  border: 1px solid rgba(107, 114, 128, 0.3);
-  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
+/* Career Advice - icon sizing retained below */
 
 .enhanced-benefit-card:nth-child(5) .benefit-icon-enhanced svg {
   width: 21.6px; /* Increased by 10% from 19.6px */
@@ -3143,11 +3116,18 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Photobook - Gray */
-.enhanced-benefit-card:nth-child(6) .benefit-icon-enhanced {
-  background: linear-gradient(135deg, #6b7280, #4b5563);
-  border: 1px solid rgba(107, 114, 128, 0.3);
-  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+/* Photobook - icon sizing retained below */
+
+/* Override: Make icon container transparent with green border only */
+.enhanced-benefit-card .benefit-icon-enhanced {
+  background: transparent !important;
+  border: 2px solid var(--accent, #96BC21) !important;
+  box-shadow: none !important;
+}
+
+/* Keep SVG icons visible; no fill behind */
+.enhanced-benefit-card .benefit-icon-enhanced svg {
+  color: #ffffff;
 }
 
 .enhanced-benefit-card:nth-child(6) .benefit-icon-enhanced svg {
