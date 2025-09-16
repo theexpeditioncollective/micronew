@@ -1,3 +1,13 @@
+/* Reduce gap between 'checklists.' and '#Beyondatrip' in hero */
+@media (max-width: 767px) {
+  .mb-12.text-left.md\:text-center {
+    margin-bottom: 1.5rem !important;
+  }
+  .text-3xl.md\:text-5xl.font-extrabold.leading-snug.mb-6.md\:mb-8 {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+}
 /* Strong dim overlay for background image (not hero section) */
 .background-dim {
   position: fixed;
@@ -5276,5 +5286,12 @@ Modern Reset Button
   .logo-wrapper img {
     -webkit-backface-visibility: hidden;
     -webkit-transform: translateZ(0);
+  }
+}
+
+/* Mobile only: push text block down from logo */
+@media (max-width: 767px) {
+  .block.whitespace-normal.md\:whitespace-nowrap.line {
+    margin-top: 1rem;
   }
 }
