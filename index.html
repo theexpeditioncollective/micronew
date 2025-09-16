@@ -576,7 +576,7 @@
     <div class="aurora b"></div>
     <div class="max-w-7xl mx-auto px-6 pt-8 pb-12 md:pt-14 md:pb-24 relative z-10">
       <div class="max-w-7xl mx-auto px-6 pt-8 pb-12 md:pt-14 md:pb-24 relative z-10">
-        <div class="mb-12 text-center">
+        <div class="mb-12 text-left md:text-center">
           <h1 id="heroHeadline" class="ghost-seq text-3xl md:text-5xl font-extrabold"
             aria-label="Beyond itineraries. Beyond checklists.">
             <span class="block whitespace-normal md:whitespace-nowrap line" aria-hidden="true">
@@ -587,7 +587,7 @@
           </h1>
         </div>
         <div class="grid lg:grid-cols-12 gap-8 items-start">
-          <div class="lg:col-span-7 space-y-7 pl-4 sm:pl-6 lg:pl-10 xl:pl-14">
+          <div class="text-left lg:col-span-7 space-y-7 pl-4 sm:pl-6 lg:pl-10 xl:pl-14">
             <!-- <p class="uppercase tracking-[0.25em] text-xs text-slate-400">Invitation Only</p> -->
             <div class="space-y-2 md:space-y-3">
               <p class="text-3xl md:text-5xl font-extrabold leading-snug mb-6 md:mb-8" style="color: var(--ink)">
@@ -615,7 +615,7 @@
                     class="inline-flex items-baseline gap-1 leading-none">Tribe!<span class="seats-note">only 100
                         seats</span></span></h3>
               </div>
-              <form id="waitlistHero" action="https://formsubmit.co/theexpeditioncollectiveweb@gmail.com" method="POST"
+              <form id="waitlistHero" tabindex="-1" action="https://formsubmit.co/theexpeditioncollectiveweb@gmail.com" method="POST"
                 class="mt-2 md:mt-3 space-y-4 md:space-y-5 pointer-events-auto" novalidate>
                 <div class="grid md:grid-cols-2 gap-4">
                   <label class="block">
@@ -888,18 +888,34 @@
     // ---------- Utilities ----------
     const $ = (q) => document.querySelector(q);
 
-    // Smooth scrolling for anchor links
+    // Smooth scrolling for in-page anchors with safety unlock (prevents stuck scroll)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
-        if (href === '#') return; // Ignore simple hash links
+        if (!href || href === '#' || href.length < 2) return; // Ignore simple hash links
 
         const targetEl = document.querySelector(href);
-        if (targetEl) {
-          e.preventDefault();
-          targetEl.scrollIntoView({
-            behavior: 'smooth'
-          });
+        if (!targetEl) return;
+
+        e.preventDefault();
+
+        // Safety: ensure no residual scroll lock from sidebar or other UI
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        const s = document.getElementById('sidebar');
+        const so = document.getElementById('sidebar-overlay');
+        if (s) s.classList.remove('open');
+        if (so) so.classList.remove('active');
+
+        // Account for fixed header height when positioning the scroll target
+        const headerEl = document.querySelector('.header');
+        const offset = headerEl ? Math.min(140, headerEl.offsetHeight || 0) : 0;
+        const y = targetEl.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+
+        // Move focus for accessibility and better keyboard navigation
+        if (typeof targetEl.focus === 'function') {
+          setTimeout(() => targetEl.focus({ preventScroll: true }), 400);
         }
       });
     });
